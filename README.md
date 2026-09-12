@@ -92,7 +92,7 @@ prints the final answer, token metrics, estimated cost, and analysis table.
 ## Validate Without Calling Azure
 
 ```bash
-python -m py_compile main.py gemini_azure_adapter.py
+python -m py_compile main.py azure_openai_client.py
 ```
 
 Checks both Python files for syntax errors without making an Azure request. This
@@ -111,8 +111,8 @@ Python environment.
 
 - `main.py` contains the ReAct loop, simulated tools, demo data, metrics, and
 	terminal output.
-- `gemini_azure_adapter.py` contains the provider-specific Azure request and
-	response plumbing used by the loop.
+- `azure_openai_client.py` contains the Azure OpenAI request and response
+	handling used by the loop.
 - `requirements.txt` lists the Python dependencies.
 - `.env.example` lists the required configuration variable names.
 - `.gitignore` prevents local credentials, virtual environments, caches, and OS

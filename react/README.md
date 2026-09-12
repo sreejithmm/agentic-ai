@@ -38,11 +38,11 @@ Activates the environment in the current terminal session. On Windows, use
 `.venv\\Scripts\\activate` instead.
 
 ```bash
-python -m pip install -r react/requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 Installs the Azure OpenAI client, Rich terminal formatting, token-counting
-support, and Black listed for this agent.
+support, and Black listed for the workspace.
 
 Set the Azure OpenAI configuration before running:
 
@@ -80,7 +80,7 @@ making an Azure request.
   terminal output.
 - `../common/azure_openai_client.py` contains reusable Azure OpenAI request and
   response handling.
-- `requirements.txt` lists this agent's dependencies.
+- `../requirements.txt` lists the shared workspace dependencies.
 
 ## Security
 

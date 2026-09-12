@@ -14,8 +14,7 @@ agentic-ai/
 │   └── azure_openai_client.py
 └── react/
     ├── main.py
-    ├── README.md
-    └── requirements.txt
+    └── README.md
 ```
 
 Only the `react` agent exists today. Future agents can be added as sibling
@@ -57,12 +56,13 @@ python -m pip install --upgrade pip
 Updates the package installer inside the virtual environment.
 
 ```bash
-python -m pip install -r react/requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-Installs the dependencies currently needed by the `react` agent. When more
-agents are added, each agent may have its own requirements file, or the project
-can introduce a shared requirements file for common dependencies.
+Installs the workspace dependencies currently needed by the `react` agent and
+shared Azure code. Add dependencies used by multiple agents to this root file.
+If an agent later needs a dependency that should not be installed for the rest
+of the workspace, give that agent its own requirements file instead.
 
 ## Configuration
 

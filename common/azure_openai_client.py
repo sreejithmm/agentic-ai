@@ -1,4 +1,4 @@
-"""Shared Azure OpenAI Responses API adapter for Gemini-style prototypes."""
+"""Shared Azure OpenAI Responses API client for agent prototypes."""
 
 import json
 import os
@@ -8,7 +8,7 @@ import tiktoken
 
 
 class Part:
-    """Small provider-neutral part used by the existing Gemini-style loop."""
+    """Small provider-neutral part used by the agent loop."""
 
     def __init__(self, text=None, function_call=None, function_response=None, thought=False):
         self.text = text
@@ -40,7 +40,7 @@ class FunctionResponse:
 
 
 class AzureResponsesAdapter:
-    """Translate a Gemini-style prototype history to Azure Responses API calls."""
+    """Translate prototype history to Azure Responses API calls."""
 
     def __init__(self, api_key=None, endpoint=None, deployment=None):
         self.api_key = api_key or os.environ["AZURE_OPENAI_API_KEY"]

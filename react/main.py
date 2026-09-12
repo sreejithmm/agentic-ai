@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-ReAct Agent Prototype - Token Overhead Demonstration
+Azure OpenAI ReAct Agent - Token Overhead Demonstration
 Demonstrates the ReAct (Reasoning + Acting) loop with tools:
   - search: simulated web search (compact vs bloated modes)
-  - summariser: text summarisation via Gemini
+    - summariser: text summarisation via Azure OpenAI
 
 This version tracks, measures, and visualises the quadratic token overhead 
 inherent in ReAct loops, contrasting optimized vs. unoptimized payloads and loop failures.
@@ -41,7 +41,7 @@ _Content = Content
 _FunctionResponse = FunctionResponse
 
 # ── Pricing Constants ─────────────────────────────────────────────────────────
-# Gemini 2.5 Flash pricing per 1,000,000 tokens (as of mid-2026 / standard rates)
+# Demonstration pricing assumptions per 1,000,000 tokens.
 PRICE_INPUT_PER_M = 0.075   # $0.075 per million input tokens
 PRICE_OUTPUT_PER_M = 0.30   # $0.30 per million output tokens (includes reasoning)
 
@@ -766,7 +766,7 @@ def run_react_agent(
 
     elapsed = time.time() - start
 
-    # Azure does not expose Gemini's count_tokens endpoint; estimate locally.
+    # Estimate context tokens locally because the provider count API is absent.
     try:
         final_unique_tokens = ADAPTER.count_context_tokens(contents)
     except Exception as exc:

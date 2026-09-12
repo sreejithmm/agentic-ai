@@ -1,0 +1,14 @@
+venv/
+.venv/
+__pycache__
+*.pyc
+*.pyo
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Local tooling and OS files
+.DS_Store
+.pytest_cache/

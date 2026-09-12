@@ -1,24 +1,30 @@
-# Azure ReAct Agent
+# Agentic AI
 
-A standalone Azure OpenAI experiment that demonstrates how a tool-using ReAct
-agent accumulates token and cost overhead as it reasons through multiple steps.
-The program is a console application rather than a service or web API.
+A workspace for experimenting with multiple Azure OpenAI agents. Each agent is
+kept in its own folder, while reusable Azure OpenAI functionality is shared from
+`common/`.
 
-## What It Demonstrates
+## What You Will Find Here
 
-The program runs a fixed comparison task: calculate population density for India
-and China, identify the lower-density country, and calculate a related value.
-During the run it compares compact and detailed simulated knowledge-base results
-and reports:
+The repository is organized around independent agent experiments:
 
-- ReAct steps and tools used
-- Input and output tokens accumulated across model calls
-- Final unique tokens versus total billed tokens
-- Estimated input/output cost
-- Repeated-action and maximum-step safeguards
+```text
+agentic-ai/
+├── common/
+│   └── azure_openai_client.py
+└── react/
+    ├── main.py
+    ├── README.md
+    └── requirements.txt
+```
 
-The knowledge bases are embedded demo data. The `search` tool does not browse the
-internet or query an external database.
+Only the `react` agent exists today. Future agents can be added as sibling
+folders, for example `planner/`, `researcher/`, or `critic/`, each with its own
+entry point, README, and dependencies when needed.
+
+The shared code in `common/` provides Azure OpenAI request and response handling
+so agents can focus on their own orchestration, tools, prompts, and evaluation
+logic.
 
 ## Requirements
 
@@ -27,41 +33,40 @@ internet or query an external database.
 - An Azure OpenAI model deployment
 - An Azure OpenAI API key
 
-## Installation
+## Setup
 
-Run these commands from the project directory:
+Run these commands from the `agentic-ai` project root.
 
 ```bash
 python3 -m venv .venv
 ```
 
-Creates an isolated Python environment in `.venv`, so this project's packages do
-not alter your system Python installation or other projects.
+Creates an isolated Python environment for this workspace.
 
 ```bash
 source .venv/bin/activate
 ```
 
-Activates the virtual environment for the current terminal session. On Windows,
-use `.venv\\Scripts\\activate` instead.
+Activates that environment in the current terminal session. On Windows, use
+`.venv\\Scripts\\activate` instead.
 
 ```bash
 python -m pip install --upgrade pip
 ```
 
-Updates `pip` inside the virtual environment. This is optional, but helps avoid
-installation issues with older package-manager versions.
+Updates the package installer inside the virtual environment.
 
 ```bash
 python -m pip install -r react/requirements.txt
 ```
 
-Installs the Azure OpenAI client, Rich terminal formatting, token-counting
-support, and the formatting tool listed in `requirements.txt`.
+Installs the dependencies currently needed by the `react` agent. When more
+agents are added, each agent may have its own requirements file, or the project
+can introduce a shared requirements file for common dependencies.
 
 ## Configuration
 
-The application reads these variables when it starts:
+All agents use the same Azure OpenAI environment variables:
 
 ```bash
 export AZURE_OPENAI_API_KEY="your-api-key"
@@ -69,36 +74,55 @@ export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
 export AZURE_OPENAI_DEPLOYMENT="your-deployment-name"
 ```
 
-Each command sets one variable in the current shell:
+Each `export` command places one setting in the current shell:
 
-- `AZURE_OPENAI_API_KEY` authenticates requests to Azure OpenAI.
-- `AZURE_OPENAI_ENDPOINT` identifies the Azure OpenAI resource endpoint.
-- `AZURE_OPENAI_DEPLOYMENT` selects the model deployment to call.
+- `AZURE_OPENAI_API_KEY` authenticates requests.
+- `AZURE_OPENAI_ENDPOINT` identifies the Azure OpenAI resource.
+- `AZURE_OPENAI_DEPLOYMENT` selects the deployed model.
 
-The values above are placeholders. Replace them with your real values, and never
-commit them. The repository ignores `.env` files and local virtual environments;
-`.env.example` documents the required names without containing credentials.
+The values above are placeholders. Keep real credentials in environment
+variables or a secret manager. Never commit them. `.env` files, virtual
+environments, caches, and local OS files are ignored by Git; `.env.example`
+contains only the required variable names.
 
-## Run
+## Running Agents
+
+Run an agent as a Python module from the project root. The module form keeps the
+root package layout available, including imports from `common/`.
 
 ```bash
 python -m react.main
 ```
 
-Starts the console demonstration. It creates the Azure client, runs the ReAct
-loop, calls the configured deployment for reasoning and summarization, and then
-prints the final answer, token metrics, estimated cost, and analysis table.
+Runs the current ReAct agent. See [`react/README.md`](react/README.md) for its
+task, tools, output, and agent-specific validation command.
 
-## Validate Without Calling Azure
+When another agent is added, it should follow the same pattern:
 
 ```bash
-python -m py_compile react/main.py common/azure_openai_client.py
+python -m <agent-folder>.<entry-point>
 ```
 
-Checks both Python files for syntax errors without making an Azure request. This
-is useful after editing the code or before opening a pull request.
+For example, a future `planner/main.py` would run as:
 
-When you are finished, run:
+```bash
+python -m planner.main
+```
+
+## Shared Code
+
+- `common/azure_openai_client.py` provides reusable Azure OpenAI client behavior.
+- `common/` is intended for code shared by multiple agents, not agent-specific
+  prompts or tools.
+- Agent folders own their orchestration, tools, demo data, metrics, and output.
+
+## Security
+
+Do not place API keys in Python files, README files, `.env.example`, or commits.
+If a credential is exposed, revoke it in Azure immediately and issue a
+replacement.
+
+## Deactivate the Environment
 
 ```bash
 deactivate
@@ -106,20 +130,3 @@ deactivate
 
 Leaves the project's virtual environment and returns the terminal to its normal
 Python environment.
-
-## Project Files
-
-- `react/main.py` contains the ReAct loop, simulated tools, demo data, metrics,
-  and terminal output.
-- `common/azure_openai_client.py` contains reusable Azure OpenAI request and
-  response handling for agents in this project.
-- `react/requirements.txt` lists the React demo's Python dependencies.
-- `.env.example` lists the required configuration variable names.
-- `.gitignore` prevents local credentials, virtual environments, caches, and OS
-	files from being committed.
-
-## Security Notes
-
-Keep API keys in environment variables or a local secret manager. Do not paste a
-real key into `react/main.py`, `README.md`, `.env.example`, or a commit. If a key is
-ever exposed, revoke it in Azure immediately and issue a replacement.

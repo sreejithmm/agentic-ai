@@ -53,7 +53,7 @@ Updates `pip` inside the virtual environment. This is optional, but helps avoid
 installation issues with older package-manager versions.
 
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install -r react/requirements.txt
 ```
 
 Installs the Azure OpenAI client, Rich terminal formatting, token-counting
@@ -82,7 +82,7 @@ commit them. The repository ignores `.env` files and local virtual environments;
 ## Run
 
 ```bash
-python main.py
+python -m react.main
 ```
 
 Starts the console demonstration. It creates the Azure client, runs the ReAct
@@ -92,7 +92,7 @@ prints the final answer, token metrics, estimated cost, and analysis table.
 ## Validate Without Calling Azure
 
 ```bash
-python -m py_compile main.py azure_openai_client.py
+python -m py_compile react/main.py common/azure_openai_client.py
 ```
 
 Checks both Python files for syntax errors without making an Azure request. This
@@ -109,11 +109,11 @@ Python environment.
 
 ## Project Files
 
-- `main.py` contains the ReAct loop, simulated tools, demo data, metrics, and
-	terminal output.
-- `azure_openai_client.py` contains the Azure OpenAI request and response
-	handling used by the loop.
-- `requirements.txt` lists the Python dependencies.
+- `react/main.py` contains the ReAct loop, simulated tools, demo data, metrics,
+  and terminal output.
+- `common/azure_openai_client.py` contains reusable Azure OpenAI request and
+  response handling for agents in this project.
+- `react/requirements.txt` lists the React demo's Python dependencies.
 - `.env.example` lists the required configuration variable names.
 - `.gitignore` prevents local credentials, virtual environments, caches, and OS
 	files from being committed.
@@ -121,5 +121,5 @@ Python environment.
 ## Security Notes
 
 Keep API keys in environment variables or a local secret manager. Do not paste a
-real key into `main.py`, `README.md`, `.env.example`, or a commit. If a key is
+real key into `react/main.py`, `README.md`, `.env.example`, or a commit. If a key is
 ever exposed, revoke it in Azure immediately and issue a replacement.

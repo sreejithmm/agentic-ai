@@ -30,7 +30,7 @@ console = Console()
 
 # ── Shared Azure adapter ─────────────────────────────────────────────────────
 
-from azure_openai_client import AzureResponsesAdapter, Content, FunctionResponse, Part
+from common.azure_openai_client import AzureResponsesAdapter, Content, FunctionResponse, Part
 
 ADAPTER = AzureResponsesAdapter()
 AZURE_OPENAI_ENDPOINT = ADAPTER.endpoint

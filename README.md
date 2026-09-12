@@ -12,14 +12,17 @@ The repository is organized around independent agent experiments:
 agentic-ai/
 ├── common/
 │   └── azure_openai_client.py
-└── react/
+├── react/
+    ├── main.py
+    └── README.md
+└── chatbot/
     ├── main.py
     └── README.md
 ```
 
-Only the `react` agent exists today. Future agents can be added as sibling
-folders, for example `planner/`, `researcher/`, or `critic/`, each with its own
-entry point, README, and dependencies when needed.
+The `react` and `chatbot` agents exist today. Future agents can be added as
+sibling folders, for example `planner/`, `researcher/`, or `critic/`, each with
+the same entry point, README, and package structure.
 
 The shared code in `common/` provides Azure OpenAI request and response handling
 so agents can focus on their own orchestration, tools, prompts, and evaluation
@@ -96,6 +99,13 @@ python -m react.main
 
 Runs the current ReAct agent. See [`react/README.md`](react/README.md) for its
 task, tools, output, and agent-specific validation command.
+
+```bash
+python -m chatbot.main
+```
+
+Runs the current chatbot scaffold. See [`chatbot/README.md`](chatbot/README.md)
+for its purpose and validation command.
 
 When another agent is added, it should follow the same pattern:
 

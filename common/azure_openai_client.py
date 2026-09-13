@@ -107,11 +107,22 @@ class AzureResponsesAdapter:
 
     def summarize(self, prompt):
         """Run a standalone text-generation request for a local summarizer tool."""
-        response = self.client.responses.create(
-            model=self.deployment,
-            input=prompt,
-        )
-        return response.output_text.strip()
+        text, _, _ = self.summarize_with_usage(prompt)
+        return text
+
+    def summarize_with_usage(self, prompt, tools=None):
+        """Return text-generation output and provider token usage."""
+        request = {
+            "model": self.deployment,
+            "input": prompt,
+        }
+        if tools:
+            request["tools"] = tools
+        response = self.client.responses.create(**request)
+        usage = getattr(response, "usage", None)
+        input_tokens = getattr(usage, "input_tokens", 0) if usage else 0
+        output_tokens = getattr(usage, "output_tokens", 0) if usage else 0
+        return response.output_text.strip(), input_tokens, output_tokens
 
     @staticmethod
     def _response_to_compat(response):

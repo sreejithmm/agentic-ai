@@ -12,3 +12,4 @@ __pycache__
 # Local tooling and OS files
 .DS_Store
 .pytest_cache/
+*.txt
